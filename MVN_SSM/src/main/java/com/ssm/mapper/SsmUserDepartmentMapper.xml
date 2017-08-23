@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >    
+<mapper namespace="com.ssm.dao.ISsmUserDao" >
+	<resultMap type="com.ssm.pojo.SsmUser" id="ty1">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="ctime" column="ctime"/>
+		<result property="timestamp" column="timestamp"/>
+		<collection property="dpmt" ofType="com.ssm.pojo.SsmDepartment">
+			<id property="id" column="did" />
+			<result property="name" column="dname"/>
+			<result property="ctime" column="dctime"/>
+			<result property="timestamp" column="dtimestamp"/>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.ssm.pojo.SsmUser" id="ty2">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="ctime" column="ctime"/>
+		<result property="timestamp" column="timestamp"/>
+	</resultMap>
+	
+	<select id="getUserById" resultMap="ty1">
+		select a.id,a.name,a.ctime,a.timestamp,
+		c.id as did,c.name as dname,c.ctime as dctime,c.timestamp as dtimestamp 
+     	from ssm_user a 
+     	inner join ssm_sys_user_department b on a.id=b.u_id 
+     	inner join ssm_department c on b.d_id=c.id 
+     	where a.id=#{id}
+	</select>
+	
+     <select id="getUserByDId" resultMap="ty2" >
+     	select a.id,a.name,a.ctime,a.timestamp 
+     	from ssm_user a 
+     	inner join ssm_sys_user_department b on a.id=b.u_id 
+     	where b.d_id=#{id}
+     </select>
+      
+</mapper>
